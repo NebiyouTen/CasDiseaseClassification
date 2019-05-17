@@ -33,12 +33,12 @@ def main(argv):
         ])
 
     # transform = None
-    # print("Creating train data set ... ")
-    # train_data_set = data_loader.CassavaImagesDataset(C.TRAIN_DATA_PATH, C.TRAIN_LABEL_PATH
-    #                                                                     , transform)
-    # print("Creating train data loader ... ")
-    # train_loader = torch.utils.data.DataLoader(train_data_set, batch_size=4,
-    #                                           shuffle=True, num_workers=2)
+    print("Creating train data set ... ")
+    train_data_set = data_loader.CassavaImagesDataset(C.TRAIN_DATA_PATH, C.TRAIN_LABEL_PATH
+                                                                        , transform)
+    print("Creating train data loader ... ")
+    train_loader = torch.utils.data.DataLoader(train_data_set, batch_size=4,
+                                              shuffle=True, num_workers=2)
 
     print("Creating val data set ... ")
     val_data_set    = data_loader.CassavaImagesDataset(C.TRAIN_DATA_PATH, C.TRAIN_LABEL_PATH
@@ -49,7 +49,7 @@ def main(argv):
 
     print("Creating a model ... ")
     casava_model = model.ResNet()
-    train.train(val_loader, casava_model)
+    train.train(train_loader, casava_model)
 
 
 if __name__ == '__main__':

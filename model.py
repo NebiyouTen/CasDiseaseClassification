@@ -39,18 +39,13 @@ class BasicBlock(nn.Module):
 
     def forward(self, x):
         identity = x
-        print("Identitfy shape ", identity.shape)
         out = self.conv1(x)
-        print("Output 0 shape  ", out.shape)
 
         out = self.relu(self.bn1(out))
-        print("Output 1 shape  ", out.shape)
 
         out = self.conv2(out)
-        print("Output 2 shape  ", out.shape)
 
         out = self.bn2(out)
-        print("Output 3 shape  ", out.shape)
 
         out += identity
         out = self.relu(out)
@@ -67,7 +62,7 @@ class ResNet(nn.Module):
         self.bn1 = nn.BatchNorm2d(self.inplanes)
         self.relu = nn.ReLU(inplace=True)
         self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
-        self.layer1 = self._make_layer(BasicBlock, 64)
+        self.layer1 = self._make_layer(BasicBlock, 128)
         self.layer2 = self._make_layer(BasicBlock, 128, stride=1)
         self.layer3 = self._make_layer(BasicBlock, 256, stride=1)
         self.layer4 = self._make_layer(BasicBlock, 512, stride=1)
@@ -82,9 +77,10 @@ class ResNet(nn.Module):
                 nn.init.constant_(m.bias, 0)
 
     def _make_layer(self, block, planes, stride=1, dilate=False):
-        self.inplanes = planes
         layers = []
-        layers.append(block(self.inplanes, planes, stride))
+        layers.append(conv1x1(self.inplanes, planes, stride=stride));
+        layers.append(block(planes, planes, stride))
+        self.inplanes = planes
         return nn.Sequential(*layers)
 
     def forward(self, x):
