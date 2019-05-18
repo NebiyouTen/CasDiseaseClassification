@@ -20,7 +20,7 @@ HEALTHY_LABEL             = 4
 
 TRAIN_DATA_PATH           = "data_sets/train_data.npy"
 TRAIN_LABEL_PATH          = "data_sets/train_label.npy"
-VAL_DATA_PATH             = "data_sets/val.npy"
+VAL_DATA_PATH             = "data_sets/val_data.npy"
 VAL_LABEL_PATH            = "data_sets/val_label.npy"
 
 TRAIN_VAL_SPLIT           = 0.8
@@ -31,5 +31,7 @@ AVERAGE_WIDTH             = 606
 EPOCH                     = 10
 LEARNING_RATE             = 1e-3
 WEIGHT_DECAY              = 1e-6
-SAVE_MODEL_INTERVAL       = 10
-PRINT_TRAIN_INFO_INTERVAL = 10
+SAVE_MODEL_INTERVAL       = 1
+PRINT_TRAIN_INFO_INTERVAL = 1
+
+MODEL_PATH_PREFIX = "models/CassavaImagesDataset-"

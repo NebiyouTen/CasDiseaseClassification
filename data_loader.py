@@ -34,8 +34,8 @@ def generate_train_val(image_dir, image_label):
     image_labels = np.zeros((len(cbb_train_images_files)))
     print (len(cbb_train_images_files)," images in ", image_dir)
     for i, image in enumerate(cbb_train_images_files):
-        img = mpimg.imread(image)
-        image_array.append(img)
+        #img = mpimg.imread(image)
+        image_array.append(image)
         image_labels[i] = image_label
     return image_array, image_labels
 
@@ -67,10 +67,13 @@ def generate_data_set():
     print ("Train length is ", train_length)
     print ("Val length is "  , len(images_all) - train_length)
 
-    np.save(C.TRAIN_DATA_PATH,  images_all[:train_length])
-    np.save(C.TRAIN_LABEL_PATH, labels_all[:train_length])
-    np.save(C.VAL_DATA_PATH,  images_all[train_length:])
-    np.save(C.VAL_LABEL_PATH, labels_all[train_length:])
+    idx = np.arange(len(images_all))
+    np.random.shuffle(idx)
+
+    np.save(C.TRAIN_DATA_PATH,  images_all[idx[:train_length]])
+    np.save(C.TRAIN_LABEL_PATH, labels_all[idx[:train_length]])
+    np.save(C.VAL_DATA_PATH,  images_all[idx[train_length:]])
+    np.save(C.VAL_LABEL_PATH, labels_all[idx[train_length:]])
 
 class CassavaImagesDataset(Dataset):
     """CassavaImagesDataset dataset."""
@@ -92,7 +95,8 @@ class CassavaImagesDataset(Dataset):
         return len(self.data)
 
     def __getitem__(self, idx):
-        sample_data  = self.data[idx]
+        sample_data_path  = self.data[idx]
+        sample_data = mpimg.imread(sample_data_path)
         sample_label = self.data_label[idx]
         # if transform call back, tranform image
         if self.transform:
@@ -105,7 +109,7 @@ def collate (batch):
 
 def main(argv):
     print("Data_loader main")
-    # generate_data_set()
+    generate_data_set()
 
 if __name__ == '__main__':
     main(sys.argv)

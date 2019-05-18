@@ -16,9 +16,18 @@ import model
 import time
 import train
 import sys
+import argparse
 from torchsummary import summary
 
 def main(argv):
+
+    parser = argparse.ArgumentParser(description='Cassava Disease Classification')
+    parser.add_argument("-m","--model_path", help="Model path extention."
+                , type=str)
+    args = parser.parse_args(argv[1:])
+    model_path = args.model_path
+
+    print("Model path is %s" %(model_path))
 
     print("Program started ")
 
@@ -41,7 +50,7 @@ def main(argv):
                                               shuffle=True, num_workers=2)
 
     print("Creating val data set ... ")
-    val_data_set    = data_loader.CassavaImagesDataset(C.TRAIN_DATA_PATH, C.TRAIN_LABEL_PATH
+    val_data_set    = data_loader.CassavaImagesDataset(C.VAL_DATA_PATH, C.VAL_LABEL_PATH
                                                                         , transform)
     print("Creating a val data loader ... ")
     val_loader = torch.utils.data.DataLoader(val_data_set, batch_size=4,
@@ -49,6 +58,15 @@ def main(argv):
 
     print("Creating a model ... ")
     casava_model = model.ResNet()
+    if model_path is not None:
+        # if there is a saved model, try to load it
+        try:
+            casava_model.load_state_dict(torch.load( model_path  ))
+            print("Model %s loaded " %(model_path))
+        except Exception as e:
+            print("Failed to load model %s. %s" %(model_path, str(e)))
+
+
     train.train(train_loader, casava_model)
 
 
