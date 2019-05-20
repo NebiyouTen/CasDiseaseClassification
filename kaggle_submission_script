@@ -1,0 +1,1 @@
+kaggle competitions submit cassava-disease  -f sub_ensamble.csv  -m first submission
