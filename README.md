@@ -1,1 +1,1 @@
-# Casava disease classification project
+# Casava Disease Classification Project
